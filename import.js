@@ -112,7 +112,12 @@ function processTableImport(table) {
 
                 });
                 jsonfile.on('error', function (err) {
-                    reject(err);
+                    if (err.code === 'ENOENT') {
+                        console.log('File ' + DIRECTORY + '/' + table + '.json was not found, skipping');
+                        resolve();
+                    } else {
+                        reject(err);
+                    }
                 });
 
                 var startTime = Date.now();
